@@ -1,0 +1,8 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/1185818338_2016169504_223132457.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_4089058613_1176018917.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_1327136361_223132457.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_4076857288_3340139083.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_3126309598_1035541416.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_1386192918_1117167277.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_784179552_435362236.mp4'

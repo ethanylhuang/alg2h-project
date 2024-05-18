@@ -1,0 +1,2 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/DrawAxes/1185818338_1196218480_223132457.mp4'
