@@ -1,6 +1,11 @@
 from manim import *
 import numpy as np
+import copy
 
+config.frame_height = 10
+config.frame_width = 10
+config.pixel_width = 1000
+config.pixel_height = 1000
 class MakeFibSquares(MovingCameraScene):
 
     def construct(self):
@@ -61,3 +66,28 @@ class MakeFibSquares(MovingCameraScene):
 
 
         self.wait(2)
+class DrawLogSpiral(MovingCameraScene):
+    def construct(self):
+        plane = (NumberPlane(x_range=[-100, 100], y_range=[-100, 100], axis_config={"color": WHITE}).add_coordinates())
+        labels = plane.get_axis_labels(x_label="x", y_label="y")
+
+        self.play(DrawBorderThenFill(plane), Write(labels))
+
+        golden_ratio = (1 + np.sqrt(5)) / 2
+
+        a = 1
+        b = np.log(golden_ratio) / (np.pi / 2)
+
+        theta_values = np.linspace(0, 4 * PI, 1000)
+        r_values = a * np.exp(b * theta_values)
+
+        x_values = r_values * np.cos(theta_values)
+        y_values = r_values * np.sin(theta_values)
+
+        spiral_points = np.column_stack([x_values, y_values, np.zeros_like(x_values)])
+
+        spiral = VMobject().set_points_as_corners(spiral_points)
+        self.play(Create(spiral), run_time=5)
+
+
+        self.wait(3)
