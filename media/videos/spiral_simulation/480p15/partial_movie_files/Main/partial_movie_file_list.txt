@@ -5,4 +5,6 @@ file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_4076857288_3340139083.mp4'
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_3126309598_1035541416.mp4'
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_1386192918_1117167277.mp4'
-file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_784179552_435362236.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_2729905512_3785352413.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_4060282644_3060976030.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_simulation/480p15/partial_movie_files/Main/624642324_784179552_3650602554.mp4'

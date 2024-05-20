@@ -24,7 +24,7 @@ class ShowFib(Scene):
         fade_out(self)
         boxes = []
         dir = [DOWN, RIGHT, UP, LEFT]
-        for i in range (0, 4):
+        for i in range (0, 6):
             curr = fib[i]
             text = Text(str(curr))
             square = Square(side_length=curr) 
