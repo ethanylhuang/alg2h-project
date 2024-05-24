@@ -2,11 +2,6 @@ from manim import *
 import numpy as np
 import copy
 
-config.frame_height = 10
-config.frame_width = 10
-config.pixel_width = 1000
-config.pixel_height = 1000
-
 def fib(n):
     fibs = [1, 1]
     for i in range (2, n+1):

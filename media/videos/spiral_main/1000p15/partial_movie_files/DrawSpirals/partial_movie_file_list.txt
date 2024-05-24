@@ -32,7 +32,7 @@ file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p1
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p15/partial_movie_files/DrawSpirals/1275046231_3494816192_1693299184.mp4'
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p15/partial_movie_files/DrawSpirals/2242264771_3002508747_2700433197.mp4'
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p15/partial_movie_files/DrawSpirals/3045643749_3494816192_265921993.mp4'
-file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p15/partial_movie_files/DrawSpirals/3045643749_2383141107_350039632.mp4'
+file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p15/partial_movie_files/DrawSpirals/3045643749_1566758192_350039632.mp4'
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p15/partial_movie_files/DrawSpirals/1131287969_3824260033_1593545450.mp4'
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p15/partial_movie_files/DrawSpirals/4215184672_3502505284_1593545450.mp4'
 file 'file:/Users/ethanhuang/Desktop/alg_project/media/videos/spiral_main/1000p15/partial_movie_files/DrawSpirals/3461742476_3494816192_1839057480.mp4'
