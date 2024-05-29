@@ -1,7 +1,8 @@
 from manim import *
 import numpy as np
-import copy
+import os
 
+debug = open("debug.txt", "w")
 def fib(n):
     fibs = [1, 1]
     for i in range (2, n+1):
@@ -67,6 +68,55 @@ def draw_log_spiral():
     golden_spiral.shift(ORIGIN)
     return golden_spiral
 
+def draw_sqrt_spiral(n):
+    def calc_points(n):
+        outer_points = [[1, 0, 0]]
+        theta = 0
+        for i in range(0,n):
+            hyp_length = np.sqrt(2+i)
+            theta += np.arcsin(1/hyp_length)
+            outer_points.append([hyp_length * np.cos(theta),
+                                 hyp_length * np.sin(theta), 0])
+
+            debug.write("Triangle " + str(i) + "\n")
+            debug.write("Hypotenuse length: " + str(hyp_length) + "\n")
+            debug.write("Theta: " + str(theta) + "\n")
+            debug.write("Points: " + str(outer_points) + "\n")
+
+        return outer_points
+
+    triangles = VGroup()
+    points = calc_points(n)
+    for i in range(0, len(points)-1):
+        triangle = Polygon(points[i], points[i+1], [0,0,0], color=WHITE, stroke_width=5)
+        triangles.add(triangle)
+
+
+    return triangles
+
+
+
+
+class DrawSqrtSpiral(MovingCameraScene):
+    def construct(self):
+
+        triangles = draw_sqrt_spiral(100)
+        curr_max_width = 0
+        curr_max_height = 0
+        for i in range(0, len(triangles)):
+            curr_max_width = np.max([curr_max_width, triangles[i].width + 10])
+            curr_max_height = np.max([curr_max_height, triangles[i].height + 10])
+            if (i < 15):
+                animation_time = 1.0
+            else:
+                animation_time = 0.1
+            self.play(self.camera.frame.animate.set(width=curr_max_width,
+                                                    height=curr_max_height), run_time=animation_time)
+            self.play(Create(triangles[i]), run_time=animation_time)
+
+
+
+        self.wait(2)
 
 class DrawSpirals(MovingCameraScene):
     def construct(self):
