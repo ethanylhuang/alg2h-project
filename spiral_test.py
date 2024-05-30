@@ -1,12 +1,8 @@
 from manim import *
 import numpy as np
-import copy
+import os
 
-config.frame_height = 10
-config.frame_width = 10
-config.pixel_width = 1000
-config.pixel_height = 1000
-
+debug = open("debug.txt", "w")
 def fib(n):
     fibs = [1, 1]
     for i in range (2, n+1):
@@ -16,7 +12,7 @@ def fib(n):
 def draw_fib_squares():
     dir = [UP, LEFT, DOWN, RIGHT]
     corners = [UL, UR]
-    angles = [-90, 90, 90, -90]
+    angles = [-PI / 2, PI / 2, PI / 2, -PI / 2]
 
     squares = VGroup()
     arcs = VGroup()
@@ -31,7 +27,7 @@ def draw_fib_squares():
             square.next_to(squares, dir[i % 4], buff=0)
 
         points = [square.get_corner(corners[i % 2]), square.get_corner(-corners[i % 2])]
-        arcs.add(ArcBetweenPoints(points[0], points[1], angle=angles[i % 4] * DEGREES, color=BLUE, stroke_width=20))
+        arcs.add(ArcBetweenPoints(points[0], points[1], angle=angles[i % 4], color=BLUE, stroke_width=20))
         squares.add(square)
 
         num = Text(str(fib(i)))
@@ -58,7 +54,7 @@ def draw_log_spiral():
     golden_ratio = (1 + np.sqrt(5)) / 2
     print(golden_ratio)
     a = 1
-    b = (2 * np.log(golden_ratio)) / 180
+    b = (2 * np.log(golden_ratio)) / PI
 
     start_angle = 0
     def polar_to_cartesian(theta):
@@ -67,11 +63,90 @@ def draw_log_spiral():
         y = r * np.sin(theta + start_angle)
         return np.array([x*0.5, y*0.5, 0])
 
-    theta_max = 7 * 180
+    theta_max = 7 * PI
     golden_spiral = ParametricFunction(polar_to_cartesian, t_range=[start_angle, theta_max], color=WHITE, stroke_width=20)
     golden_spiral.shift(ORIGIN)
     return golden_spiral
 
+def draw_sqrt_spiral(n):
+    hyp_angles = []
+    def calc_points(n):
+        outer_points = [[1, 0, 0]]
+        theta = 0
+        for i in range(0,n):
+            hyp_length = np.sqrt(2+i)
+            theta += np.arcsin(1/hyp_length)
+            outer_points.append([hyp_length * np.cos(theta),
+                                 hyp_length * np.sin(theta), 0])
+
+            debug.write("Triangle " + str(i) + "\n")
+            debug.write("Hypotenuse length: " + str(hyp_length) + "\n")
+            debug.write("Theta: " + str(theta) + "\n")
+            debug.write("Points: " + str(outer_points) + "\n")
+            hyp_angles.append(theta)
+
+        return outer_points
+
+    triangles = VGroup()
+    hyp_labels = VGroup()
+    leg_labels = VGroup()
+    points = calc_points(n)
+
+    debug.write("Hyp Angles: " + str(hyp_angles) + "\n")
+    for i in range(0, len(points)-1):
+        triangle = Polygon(points[i], points[i+1], [0,0,0], color=WHITE, stroke_width=5)
+        #hyp_label = MathTex(r"\sqrt{" + str(2+i) + "}").move_to(Line([0, 0, 0], points[i+1]).get_center())
+        #yp_label.scale(0.7)
+        #leg_label = MathTex("1").move_to(Line(points[i+1], points[i]).get_center())
+        #leg_label.scale(0.7)
+        #leg_label.shift(hyp_angles[i] * 0.2)
+        triangles.add(triangle)
+        #hyp_labels.add(hyp_label)
+        #leg_labels.add(leg_label)
+
+    return triangles, hyp_labels, leg_labels
+
+def draw_arch_spiral():
+    theta_0 = -2.15778
+    b = 1
+    start_angle = 0
+
+    def polar_to_cartesian(theta):
+        r = (theta - theta_0) / 2
+        x = r * np.cos(theta + start_angle)
+        y = r * np.sin(theta + start_angle)
+        return np.array([x*0.5, y*0.5, 0])
+
+    theta_max = 10 * PI
+    arch_spiral = ParametricFunction(polar_to_cartesian,
+                                     t_range=[start_angle, theta_max],
+                                     color=BLUE,
+                                     stroke_width=20)
+    arch_spiral.shift(ORIGIN)
+    return arch_spiral
+
+class DrawSqrtSpiral(MovingCameraScene):
+    def construct(self):
+
+        triangles, hyp_labels, leg_labels = draw_sqrt_spiral(200)
+        curr_max_width = 0
+        curr_max_height = 0
+        for i in range(0, 15):
+            curr_max_width = np.max([curr_max_width, triangles[i].width + 10])
+            curr_max_height = np.max([curr_max_height, triangles[i].height + 10])
+            self.play(self.camera.frame.animate.set(width=curr_max_width, height=curr_max_height), run_time=0.7)
+            #self.play(Create(triangles[i]), Write(hyp_labels[i]), Write(leg_labels[i]), run_time=0.7)
+            self.play(Create(triangles[i]), run_time=0.7)
+
+        self.play(Create(triangles[15:]), self.camera.frame.animate.set(width=triangles.width + 5, height=triangles.height + 5), run_time=15)
+
+        self.play(self.camera.frame.animate.set(width=10, height=10))
+        plane, labels = draw_plane(triangles)
+        self.play(Create(plane), Write(labels))
+        arch_spiral = draw_arch_spiral()
+        self.play(Create(arch_spiral), self.camera.frame.animate.set(width=arch_spiral.width + 5, height=arch_spiral.height + 5), run_time=15)
+
+        self.wait(2)
 
 class DrawSpirals(MovingCameraScene):
     def construct(self):
