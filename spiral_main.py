@@ -131,31 +131,6 @@ def draw_arch_spiral():
     arch_spiral.shift(ORIGIN)
     return arch_spiral
 
-class DrawSqrtSpiral(MovingCameraScene):
-    def construct(self):
-
-        triangles, sqrt_spiral, inner_lines1, inner_lines2, hyp_labels, leg_labels = draw_sqrt_spiral(300)
-        curr_max_width = 0
-        curr_max_height = 0
-        for i in range(0, 15):
-            curr_max_width = np.max([curr_max_width, sqrt_spiral[i].width + 10])
-            curr_max_height = np.max([curr_max_height, sqrt_spiral[i].height + 10])
-            self.play(self.camera.frame.animate.set(width=curr_max_width, height=curr_max_height), run_time=0.7)
-            #self.play(Create(triangles[i]), Write(hyp_labels[i]), Write(leg_labels[i]), run_time=0.7)
-            self.play(Create(sqrt_spiral[i]), Create(inner_lines1[i]), Create(inner_lines2[i]), run_time=0.7)
-
-        self.play(Create(sqrt_spiral[15:]), Create(inner_lines1[15:]), Create(inner_lines2[15:]),
-                  self.camera.frame.animate.set(width=sqrt_spiral.width + 5, height=sqrt_spiral.height + 5), run_time=15)
-
-        self.play(FadeOut(inner_lines1), FadeOut(inner_lines2))
-        self.play(self.camera.frame.animate.set(width=10, height=10))
-        plane, labels = draw_plane(triangles)
-        self.play(Create(plane), Write(labels))
-        arch_spiral = draw_arch_spiral()
-        self.play(Create(arch_spiral), self.camera.frame.animate.set(width=arch_spiral.width + 5, height=arch_spiral.height + 5), run_time=15)
-
-        self.wait(2)
-
 class DrawSpirals(MovingCameraScene):
     def construct(self):
         squares, nums, arcs = draw_fib_squares()
@@ -172,7 +147,7 @@ class DrawSpirals(MovingCameraScene):
         # self.clear()
 
         plane, labels = draw_plane(squares)
-        self.play(Create(plane), Write(labels))
+        self.play(DrawBorderThenFill(plane), Write(labels))
 
         golden_spiral = draw_log_spiral()
         self.play(self.camera.frame.animate.set(width=plane.width + 5, height=plane.height))
@@ -180,6 +155,8 @@ class DrawSpirals(MovingCameraScene):
         self.play(Create(golden_spiral), self.camera.frame.animate.set(width=golden_spiral.width+ 5, height=golden_spiral.height), run_time=15)
 
         self.wait(1)
+
+        self.play(FadeOut(golden_spiral), FadeOut(labels), FadeOut(arcs), FadeOut(squares), FadeOut(plane))
         self.clear()
 
         triangles, sqrt_spiral, inner_lines1, inner_lines2, hyp_labels, leg_labels = draw_sqrt_spiral(300)
@@ -188,8 +165,8 @@ class DrawSpirals(MovingCameraScene):
         for i in range(0, 15):
             curr_max_width = np.max([curr_max_width, sqrt_spiral[i].width + 10])
             curr_max_height = np.max([curr_max_height, sqrt_spiral[i].height + 10])
-            self.play(self.camera.frame.animate.set(width=curr_max_width, height=curr_max_height), run_time=0.7)
-            self.play(Create(sqrt_spiral[i]), Create(inner_lines1[i]), Create(inner_lines2[i]), run_time=0.7)
+            self.play(self.camera.frame.animate.set(width=curr_max_width, height=curr_max_height), run_time=0.4)
+            self.play(Create(sqrt_spiral[i]), Create(inner_lines1[i]), Create(inner_lines2[i]), run_time=0.4)
 
         self.play(Create(sqrt_spiral[15:]), Create(inner_lines1[15:]), Create(inner_lines2[15:]),
                   self.camera.frame.animate.set(width=sqrt_spiral.width + 5, height=sqrt_spiral.height + 5),
@@ -200,7 +177,7 @@ class DrawSpirals(MovingCameraScene):
 
         self.play(self.camera.frame.animate.set(width=10, height=10))
         plane, labels = draw_plane(triangles)
-        self.play(Create(plane), Write(labels))
+        self.play(DrawBorderThenFill(plane), Write(labels))
         arch_spiral = draw_arch_spiral()
         self.play(Create(arch_spiral),
                   self.camera.frame.animate.set(width=arch_spiral.width + 5, height=arch_spiral.height + 5),
