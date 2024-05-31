@@ -88,36 +88,42 @@ def draw_sqrt_spiral(n):
         return outer_points
 
     triangles = VGroup()
+    sqrt_spiral = VGroup()
+    inner_lines1 = VGroup()
+    inner_lines2 = VGroup()
     hyp_labels = VGroup()
     leg_labels = VGroup()
     points = calc_points(n)
 
     debug.write("Hyp Angles: " + str(hyp_angles) + "\n")
     for i in range(0, len(points)-1):
-        triangle = Polygon(points[i], points[i+1], [0,0,0], color=WHITE, stroke_width=5)
+
+        inner_lines1.add(Line(points[i], [0,0,0], color=WHITE, stroke_width=5))
+        inner_lines2.add(Line(points[i+1], [0,0,0], color=WHITE, stroke_width=5))
+        sqrt_spiral.add(Line(points[i], points[i+1], color=WHITE, stroke_width=5))
+        triangles.add(Polygon(points[i], points[i+1], [0,0,0], color=WHITE, stroke_width=5))
         #hyp_label = MathTex(r"\sqrt{" + str(2+i) + "}").move_to(Line([0, 0, 0], points[i+1]).get_center())
         #yp_label.scale(0.7)
         #leg_label = MathTex("1").move_to(Line(points[i+1], points[i]).get_center())
         #leg_label.scale(0.7)
         #leg_label.shift(hyp_angles[i] * 0.2)
-        triangles.add(triangle)
         #hyp_labels.add(hyp_label)
         #leg_labels.add(leg_label)
 
-    return triangles, hyp_labels, leg_labels
+    return triangles, sqrt_spiral, inner_lines1, inner_lines2, hyp_labels, leg_labels
 
 def draw_arch_spiral():
     a = 1
     b = 1
-    start_angle = 0
+    start_angle = 1
 
     def polar_to_cartesian(theta):
         r = a * (theta+start_angle)
-        x = r * np.cos(theta+start_angle)
-        y = r * np.sin(theta+start_angle)
-        return np.array([x*0.5, y*0.5 + 1, 0])
+        x = r * np.cos(theta)
+        y = r * np.sin(theta)
+        return np.array([x*0.525, y*0.525, 0])
 
-    theta_max = 10 * PI
+    theta_max = 15 * PI
     arch_spiral = ParametricFunction(polar_to_cartesian,
                                      t_range=[0, theta_max],
                                      color=BLUE,
@@ -128,18 +134,20 @@ def draw_arch_spiral():
 class DrawSqrtSpiral(MovingCameraScene):
     def construct(self):
 
-        triangles, hyp_labels, leg_labels = draw_sqrt_spiral(200)
+        triangles, sqrt_spiral, inner_lines1, inner_lines2, hyp_labels, leg_labels = draw_sqrt_spiral(300)
         curr_max_width = 0
         curr_max_height = 0
         for i in range(0, 15):
-            curr_max_width = np.max([curr_max_width, triangles[i].width + 10])
-            curr_max_height = np.max([curr_max_height, triangles[i].height + 10])
+            curr_max_width = np.max([curr_max_width, sqrt_spiral[i].width + 10])
+            curr_max_height = np.max([curr_max_height, sqrt_spiral[i].height + 10])
             self.play(self.camera.frame.animate.set(width=curr_max_width, height=curr_max_height), run_time=0.7)
             #self.play(Create(triangles[i]), Write(hyp_labels[i]), Write(leg_labels[i]), run_time=0.7)
-            self.play(Create(triangles[i]), run_time=0.7)
+            self.play(Create(sqrt_spiral[i]), Create(inner_lines1[i]), Create(inner_lines2[i]), run_time=0.7)
 
-        self.play(Create(triangles[15:]), self.camera.frame.animate.set(width=triangles.width + 5, height=triangles.height + 5), run_time=15)
+        self.play(Create(sqrt_spiral[15:]), Create(inner_lines1[15:]), Create(inner_lines2[15:]),
+                  self.camera.frame.animate.set(width=sqrt_spiral.width + 5, height=sqrt_spiral.height + 5), run_time=15)
 
+        self.play(FadeOut(inner_lines1), FadeOut(inner_lines2))
         self.play(self.camera.frame.animate.set(width=10, height=10))
         plane, labels = draw_plane(triangles)
         self.play(Create(plane), Write(labels))
@@ -169,6 +177,33 @@ class DrawSpirals(MovingCameraScene):
         golden_spiral = draw_log_spiral()
         self.play(self.camera.frame.animate.set(width=plane.width + 5, height=plane.height))
 
-        self.play(Create(golden_spiral), self.camera.frame.animate.set(width=golden_spiral.width+ 5, height=golden_spiral.height), run_time=20)
+        self.play(Create(golden_spiral), self.camera.frame.animate.set(width=golden_spiral.width+ 5, height=golden_spiral.height), run_time=15)
+
+        self.wait(1)
+        self.clear()
+
+        triangles, sqrt_spiral, inner_lines1, inner_lines2, hyp_labels, leg_labels = draw_sqrt_spiral(300)
+        curr_max_width = 0
+        curr_max_height = 0
+        for i in range(0, 15):
+            curr_max_width = np.max([curr_max_width, sqrt_spiral[i].width + 10])
+            curr_max_height = np.max([curr_max_height, sqrt_spiral[i].height + 10])
+            self.play(self.camera.frame.animate.set(width=curr_max_width, height=curr_max_height), run_time=0.7)
+            self.play(Create(sqrt_spiral[i]), Create(inner_lines1[i]), Create(inner_lines2[i]), run_time=0.7)
+
+        self.play(Create(sqrt_spiral[15:]), Create(inner_lines1[15:]), Create(inner_lines2[15:]),
+                  self.camera.frame.animate.set(width=sqrt_spiral.width + 5, height=sqrt_spiral.height + 5),
+                  run_time=15)
+
+        self.play(FadeOut(inner_lines1), FadeOut(inner_lines2))
+        self.wait(2)
+
+        self.play(self.camera.frame.animate.set(width=10, height=10))
+        plane, labels = draw_plane(triangles)
+        self.play(Create(plane), Write(labels))
+        arch_spiral = draw_arch_spiral()
+        self.play(Create(arch_spiral),
+                  self.camera.frame.animate.set(width=arch_spiral.width + 5, height=arch_spiral.height + 5),
+                  run_time=15)
 
         self.wait(2)
